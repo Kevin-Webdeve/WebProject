@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KEVIN ONLINE STORE</title>
+    <link rel="icon" href="logo.jpg">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #000000;
+            --secondary-color: #111111;
+            --accent-color: #ffffff;
+            --light-color: #f8f9fa;
+            --dark-color: #212529;
+        }
+        
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: white;
+            color: var(--primary-color);
+            scroll-behavior: smooth;
+        }
+        
+        .navbar {
+            background-color: var(--primary-color) !important;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .navbar.scrolled {
+            background-color: rgba(0,0,0,0.9) !important;
+        }
+        
+        .navbar-brand {
+            font-weight: 700;
+            font-size: 1.5rem;
+            letter-spacing: 1px;
+        }
+        
+        .hero-section {
+            background: linear-gradient(rgba(0, 0, 0, 0.8), url('https://images.unsplash.com/photo-1491553895911-0055eca6402d?ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80') no-repeat center center;
+            background-size: cover;
+            color: white;
+            padding: 150px 0;
+            margin-bottom: 50px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, transparent 65%, rgba(255,255,255,0.1) 65%);
+            z-index: 0;
+        }
+        
+        .hero-content {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .product-card {
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 25px;
+            border: 1px solid #eee;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+            background: white;
+            transform: translateY(0);
+        }
+        
+        .product-card:hover {
+            transform: translateY(-10px) rotate(2deg);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+            border-color: #ddd;
+        }
+        
+        .product-img {
+            height: 220px;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        
+        .product-card:hover .product-img {
+            transform: scale(1.05) rotate(1deg);
+        }
+        
+        .cart-item {
+            border-bottom: 1px solid #eee;
+            padding: 15px 0;
+            transition: all 0.3s ease;
+        }
+        
+        .cart-item:hover {
+            background-color: #f9f9f9;
+        }
+        
+        .quantity-control {
+            display: flex;
+            align-items: center;
+        }
+        
+        .quantity-btn {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            user-select: none;
+            background-color: #f0f0f0;
+            transition: all 0.2s ease;
+        }
+        
+        .quantity-btn:hover {
+            background-color: #e0e0e0;
+        }
+        
+        .quantity-input {
+            width: 50px;
+            text-align: center;
+            margin: 0 10px;
+            border: 1px solid #eee;
+        }
+        
+        .badge-cart {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-success {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+            transition: all 0.3s ease;
+        }
+        
+        .btn-success:hover {
+            background-color: #333;
+            border-color: #333;
+            transform: translateY(-2px);
+        }
+        
+        .btn-outline-light {
+            transition: all 0.3s ease;
+        }
+        
+        .btn-outline-light:hover {
+            background-color: rgba(255,255,255,0.1);
+            transform: translateY(-2px);
+        }
+        
+        footer {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 50px 0 30px;
+            margin-top: 80px;
+        }
+        
+        .section-title {
+            position: relative;
+            display: inline-block;
+            margin-bottom: 30px;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background-color: var(--primary-color);
+        }
+        
+        .feature-box {
+            transition: all 0.3s ease;
+            padding: 30px 20px;
+            border-radius: 8px;
+            background: white;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            height: 100%;
+        }
+        
+        .feature-box:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+        }
+        
+        .feature-icon {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            color: var(--primary-color);
+        }
+        
+        .price-tag {
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: var(--primary-color);
+        }
+        
+        .floating {
+            animation: floating 3s ease-in-out infinite;
+        }
+        
+        @keyframes floating {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+            100% { transform: translateY(0px); }
+        }
+        
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(0,0,0,0.1); }
+            70% { box-shadow: 0 0 0 15px rgba(0,0,0,0); }
+            100% { box-shadow: 0 0 0 0 rgba(0,0,0,0); }
+        }
+        
+        @media (max-width: 768px) {
+            .hero-section {
+                padding: 100px 0;
+            }
+            
+            .product-img {
+                height: 180px;
+            }
+        }
+
+        .product-card .card-body {
+            transition: all 0.3s ease;
+        }
+
+        .product-card:hover .card-body {
+            background-color: #f8f9fa;
+        }
+
+        .product-card .btn-dark {
+            transition: all 0.3s ease;
+        }
+
+        .product-card:hover .btn-dark {
+            background-color: var(--primary-color);
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <i class="fas fa-shoe-prints me-2"></i>KEVIN SHOES STORE
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#home">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#products">Products</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#about">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#contact">Contact</a>
+                    </li>
+                </ul>
+                <div class="d-flex position-relative">
+                    <button class="btn btn-outline-light position-relative pulse" data-bs-toggle="offcanvas" data-bs-target="#cartOffcanvas">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="badge bg-danger badge-cart" id="cartBadge">0</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <section class="hero-section" id="home">
+        <div class="container text-center hero-content">
+            <h1 class="display-4 fw-bold mb-4" data-aos="fade-up">PREMIUM FOOTWEAR COLLECTION</h1>
+            <p class="lead mb-4" data-aos="fade-up" data-aos-delay="100">Step up your shoe game with our curated selection of premium kicks</p>
+            <a href="#products" class="btn btn-success btn-lg px-4 floating" data-aos="fade-up" data-aos-delay="200">SHOP NOW</a>
+        </div>
+    </section>
+
+    <section class="container mb-5 py-5" id="products">
+        <h2 class="text-center mb-5 section-title" data-aos="fade-up">OUR COLLECTION</h2>
+        <div class="row g-4" id="productGrid">
+        </div>
+    </section>
+
+    <section class="py-5 bg-light" id="about">
+        <div class="container py-5">
+            <h2 class="text-center mb-5 section-title" data-aos="fade-up">ABOUT US</h2>
+            <div class="row">
+                <div class="col-lg-6 mb-4" data-aos="fade-right">
+                    <h3 class="mb-4">Welcome to Kevin Shoes Store</h3>
+                    <p class="mb-4">We specialize in premium footwear that combines style, comfort, and performance. Our carefully curated collection features the latest trends and timeless classics from top brands.</p>
+                    <p>Founded in 2025, Kevin Shoes Store has quickly become a trusted destination for shoe enthusiasts across the Philippines, offering authentic products with fast delivery and exceptional customer service.</p>
+                </div>
+                <div class="col-lg-6" data-aos="fade-left">
+                    <div class="row">
+                        <div class="col-md-6 mb-4">
+                            <div class="feature-box">
+                                <i class="fas fa-check-circle feature-icon"></i>
+                                <h4>Authentic Products</h4>
+                                <p>100% genuine footwear from authorized dealers</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-4">
+                            <div class="feature-box">
+                                <i class="fas fa-truck feature-icon"></i>
+                                <h4>Fast Delivery</h4>
+                                <p>Nationwide shipping within 3-5 business days</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-4">
+                            <div class="feature-box">
+                                <i class="fas fa-exchange-alt feature-icon"></i>
+                                <h4>Easy Returns</h4>
+                                <p>14-day hassle-free return policy</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="feature-box">
+                                <i class="fas fa-lock feature-icon"></i>
+                                <h4>Secure Payment</h4>
+                                <p>Multiple safe payment options available</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-5" id="contact">
+        <div class="container py-5">
+            <h2 class="text-center mb-5 section-title" data-aos="fade-up">CONTACT US</h2>
+            <div class="row">
+                <div class="col-lg-6 mb-5 mb-lg-0" data-aos="fade-right">
+                    <form class="p-4 bg-white rounded shadow-sm">
+                        <div class="mb-3">
+                            <input type="text" class="form-control" placeholder="Your Name" required>
+                        </div>
+                        <div class="mb-3">
+                            <input type="email" class="form-control" placeholder="Your Email" required>
+                        </div>
+                        <div class="mb-3">
+                            <input type="text" class="form-control" placeholder="Subject">
+                        </div>
+                        <div class="mb-3">
+                            <textarea class="form-control" rows="5" placeholder="Your Message" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-success w-100">SEND MESSAGE</button>
+                    </form>
+                </div>
+                <div class="col-lg-6" data-aos="fade-left">
+                    <div class="p-4 bg-white rounded shadow-sm h-100">
+                        <h4 class="mb-4">STORE INFORMATION</h4>
+                        <ul class="list-unstyled">
+                            <li class="mb-3"><i class="fas fa-map-marker-alt me-2"></i> San Pablo City, Laguna, Philippines</li>
+                            <li class="mb-3"><i class="fas fa-phone me-2"></i> +639941726094</li>
+                            <li class="mb-3"><i class="fas fa-envelope me-2"></i> 0323-4526@lspu.edu.ph</li>
+                            <li class="mb-3"><i class="fas fa-clock me-2"></i> Monday-Saturday: 9AM - 7PM</li>
+                        </ul>
+                        <div class="mt-5">
+                            <h5>FOLLOW US</h5>
+                            <div class="social-links mt-3">
+                                <a href="#" class="text-dark me-3"><i class="fab fa-facebook-f fa-lg"></i></a>
+                                <a href="#" class="text-dark me-3"><i class="fab fa-instagram fa-lg"></i></a>
+                                <a href="#" class="text-dark me-3"><i class="fab fa-twitter fa-lg"></i></a>
+                                <a href="#" class="text-dark"><i class="fab fa-tiktok fa-lg"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="cartOffcanvas">
+        <div class="offcanvas-header bg-dark text-white">
+            <h5 class="offcanvas-title">YOUR CART</h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"></button>
+        </div>
+        <div class="offcanvas-body">
+            <div id="cartItems">
+                <div class="text-center py-5" id="emptyCartMessage">
+                    <i class="fas fa-shopping-cart fa-4x mb-3 text-muted"></i>
+                    <p class="text-muted">Your cart is empty</p>
+                </div>
+            </div>
+            <div class="mt-3 d-none" id="cartSummary">
+                <hr>
+                <div class="d-flex justify-content-between mb-2">
+                    <span>Subtotal:</span>
+                    <span>₱<span id="subtotal">0</span></span>
+                </div>
+                <div class="d-flex justify-content-between mb-3">
+                    <span>Shipping:</span>
+                    <span>₱<span id="shipping">100</span></span>
+                </div>
+                <div class="d-flex justify-content-between fw-bold fs-5">
+                    <span>Total:</span>
+                    <span>₱<span id="total">100</span></span>
+                </div>
+                <button class="btn btn-dark w-100 mt-3" onclick="checkout()">PROCEED TO CHECKOUT</button>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 mb-4 mb-md-0">
+                    <h5>KEVIN SHOES STORE</h5>
+                    <p>Your premier destination for premium footwear in the Philippines.</p>
+                    <div class="social-links mt-3">
+                        <a href="#" class="text-white me-3"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="text-white me-3"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="text-white me-3"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="text-white"><i class="fab fa-tiktok"></i></a>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4 mb-md-0">
+                    <h5>QUICK LINKS</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="#home" class="text-white">Home</a></li>
+                        <li class="mb-2"><a href="#products" class="text-white">Products</a></li>
+                        <li class="mb-2"><a href="#about" class="text-white">About Us</a></li>
+                        <li class="mb-2"><a href="#contact" class="text-white">Contact</a></li>
+                        <li class="mb-2"><a href="#" class="text-white">FAQs</a></li>
+                        <li><a href="#" class="text-white">Size Guide</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <h5>NEWSLETTER</h5>
+                    <p>Subscribe for exclusive offers and new arrivals.</p>
+                    <form class="mt-3">
+                        <div class="input-group">
+                            <input type="email" class="form-control" placeholder="Your Email">
+                            <button class="btn btn-outline-light" type="submit">SUBSCRIBE</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <hr class="my-4 bg-secondary">
+            <div class="text-center">
+                <p class="mb-0">&copy; 2025 KEVIN SHOES STORE. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init({
+            duration: 800,
+            easing: 'ease-in-out',
+            once: true
+        });
+        
+        window.addEventListener('scroll', function() {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        const products = [
+            { 
+                id: 1, 
+                name: "Adizero Adios Pro 4", 
+                price: 8995, 
+                image: "shoes1.avif", 
+                description: "Lightweight racing shoes designed for marathon runners with energy-returning",
+                category: "Running Shoes"
+            },
+            { 
+                id: 2, 
+                name: "Adidas Superstar", 
+                price: 5495, 
+                image: "shoes2.avif", 
+                description: "Iconic shell-toe sneakers with leather upper and classic 3-Stripes design",
+                category: "Lifestyle"
+            },
+            { 
+                id: 3, 
+                name: "Samba OG", 
+                price: 4995, 
+                image: "shoes3.avif", 
+                description: "Classic indoor football shoes with gum rubber outsole and soft leather upper",
+                category: "Lifestyle"
+            },
+            { 
+                id: 4, 
+                name: "Dame Certified 3", 
+                price: 4595, 
+                image: "shoes4.avif", 
+                description: "Damian Lillard's signature basketball shoes with responsive cushioning",
+                category: "Basketball"
+            },
+            { 
+                id: 5, 
+                name: "Handball Spezial", 
+                price: 5995, 
+                image: "shoes5.avif", 
+                description: "Vintage-inspired handball shoes with premium suede and leather construction",
+                category: "Lifestyle"
+            },
+            { 
+                id: 6, 
+                name: "Adizero Select 3.0", 
+                price: 5295, 
+                image: "shoes6.avif", 
+                description: "Lightweight running shoes with breathable mesh upper and responsive cushioning",
+                category: "Running Shoes"
+            },
+            { 
+                id: 7, 
+                name: "Tokyo Shoes", 
+                price: 4295, 
+                image: "shoes7.avif", 
+                description: "Minimalist running-inspired sneakers with clean silhouette and comfortable fit",
+                category: "Lifestyle"
+            },
+            { 
+                id: 8, 
+                name: "Subzone Shoes", 
+                price: 3495, 
+                image: "shoes8.avif", 
+                description: "Versatile training shoes with stable platform and flexible outsole",
+                category: "Training"
+            },
+            { 
+                id: 9, 
+                name: "Adizero SL", 
+                price: 5495, 
+                image: "shoes9.avif", 
+                description: "Speed-oriented running shoes with lightweight construction and energy return",
+                category: "Running Shoes"
+            },
+            { 
+                id: 10, 
+                name: "Superstar 2.0", 
+                price: 4995, 
+                image: "shoes10.avif", 
+                description: "Updated version of the iconic shell-toe sneakers with modern comfort features",
+                category: "Lifestyle"
+            },
+            { 
+                id: 11, 
+                name: "Adizero SL2", 
+                price: 5795, 
+                image: "shoes11.avif", 
+                description: "Improved version of performance running shoes with enhanced cushioning",
+                category: "Running Shoes"
+            },
+            { 
+                id: 12, 
+                name: "Supernova Rise 2", 
+                price: 6495, 
+                image: "shoes12.avif", 
+                description: "Premium running shoes with maximum cushioning for long-distance comfort",
+                category: "Running Shoes"
+            },
+            { 
+                id: 13, 
+                name: "Duramo SL 2", 
+                price: 3295, 
+                image: "shoes13.avif", 
+                description: "Entry-level running shoes with durable construction and reliable traction",
+                category: "Running Shoes"
+            },
+            { 
+                id: 14, 
+                name: "Defiant Speed 2", 
+                price: 4995, 
+                image: "shoes14.avif", 
+                description: "Tennis shoes with lateral support and responsive cushioning for quick movements",
+                category: "Tennis"
+            },
+            { 
+                id: 15, 
+                name: "Break Start Premium", 
+                price: 3995, 
+                image: "shoes15.avif", 
+                description: "Retro-inspired basketball shoes with premium materials and comfortable fit",
+                category: "Basketball"
+            }
+        ];
+        
+        let cart = [];
+        const shippingFee = 150;
+
+        document.addEventListener('DOMContentLoaded', function() {
+            renderProducts();
+            updateCartBadge();
+            
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    if (targetId === '#') return;
+                    
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({
+                            behavior: 'smooth'
+                        });
+                        
+                        const navbarCollapse = document.querySelector('.navbar-collapse');
+                        if (navbarCollapse.classList.contains('show')) {
+                            const bsCollapse = new bootstrap.Collapse(navbarCollapse);
+                            bsCollapse.hide();
+                        }
+                    }
+                });
+            });
+        });
+
+        function renderProducts() {
+            const productGrid = document.getElementById('productGrid');
+            productGrid.innerHTML = '';
+            
+            products.forEach(product => {
+                productGrid.innerHTML += `
+                    <div class="col-md-4" data-aos="fade-up">
+                        <div class="card product-card h-100">
+                            <img src="${product.image}" class="card-img-top product-img" alt="${product.name}">
+                            <div class="card-body">
+                                <h5 class="card-title">${product.name}</h5>
+                                <p class="card-text text-muted">${product.category}</p>
+                                <p class="card-text">${product.description}</p>
+                                <div class="d-flex justify-content-between align-items-center mt-4">
+                                    <span class="price-tag">₱${product.price.toLocaleString()}</span>
+                                    <button class="btn btn-dark" onclick="addToCart(${product.id})">
+                                        <i class="fas fa-cart-plus me-2"></i>ADD TO CART
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        function addToCart(productId) {
+            const product = products.find(p => p.id === productId);
+            const existingItem = cart.find(item => item.id === productId);
+            
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                cart.push({...product, quantity: 1});
+            }
+            
+            updateCart();
+            updateCartBadge();
+            
+            showToast(`${product.name} added to cart`);
+            
+            const cartBtn = document.querySelector('[data-bs-target="#cartOffcanvas"]');
+            cartBtn.classList.add('pulse');
+            setTimeout(() => {
+                cartBtn.classList.remove('pulse');
+            }, 1000);
+        }
+
+        function updateCart() {
+            const cartItemsContainer = document.getElementById('cartItems');
+            const emptyCartMessage = document.getElementById('emptyCartMessage');
+            const cartSummary = document.getElementById('cartSummary');
+            
+            if (cart.length === 0) {
+                cartItemsContainer.innerHTML = `
+                    <div class="text-center py-5" id="emptyCartMessage">
+                        <i class="fas fa-shopping-cart fa-4x mb-3 text-muted"></i>
+                        <p class="text-muted">Your cart is empty</p>
+                    </div>
+                `;
+                cartSummary.classList.add('d-none');
+                return;
+            }
+            
+            cartSummary.classList.remove('d-none');
+            
+            let cartHTML = '';
+            let subtotal = 0;
+            
+            cart.forEach((item, index) => {
+                subtotal += item.price * item.quantity;
+                
+                cartHTML += `
+                    <div class="cart-item">
+                        <div class="d-flex justify-content-between">
+                            <div class="d-flex">
+                                <img src="${item.image}" alt="${item.name}" width="60" height="60" class="rounded me-3">
+                                <div>
+                                    <h6 class="mb-1">${item.name}</h6>
+                                    <small class="text-muted">₱${item.price.toLocaleString()} each</small>
+                                </div>
+                            </div>
+                            <div class="text-end">
+                                <span class="fw-bold">₱${(item.price * item.quantity).toLocaleString()}</span>
+                                <div class="quantity-control mt-2">
+                                    <span class="quantity-btn" onclick="updateQuantity(${index}, -1)">-</span>
+                                    <input type="text" class="quantity-input form-control form-control-sm" value="${item.quantity}" readonly>
+                                    <span class="quantity-btn" onclick="updateQuantity(${index}, 1)">+</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="text-end mt-2">
+                            <button class="btn btn-sm btn-outline-danger" onclick="removeFromCart(${index})">
+                                <i class="fas fa-trash me-1"></i>Remove
+                            </button>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            cartItemsContainer.innerHTML = cartHTML;
+            document.getElementById('subtotal').textContent = subtotal.toLocaleString();
+            document.getElementById('total').textContent = (subtotal + shippingFee).toLocaleString();
+        }
+
+        function updateQuantity(index, change) {
+            const newQuantity = cart[index].quantity + change;
+            
+            if (newQuantity < 1) {
+                removeFromCart(index);
+                return;
+            }
+            
+            cart[index].quantity = newQuantity;
+            updateCart();
+            updateCartBadge();
+        }
+
+        function removeFromCart(index) {
+            const removedItem = cart[index].name;
+            cart.splice(index, 1);
+            updateCart();
+            updateCartBadge();
+            
+            showToast(`${removedItem} removed from cart`, 'danger');
+            
+            if (cart.length === 0) {
+                const bsOffcanvas = bootstrap.Offcanvas.getInstance(document.getElementById('cartOffcanvas'));
+                bsOffcanvas.hide();
+            }
+        }
+
+        function updateCartBadge() {
+            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+            const badge = document.getElementById('cartBadge');
+            badge.textContent = totalItems;
+            
+            if (totalItems > 0) {
+                badge.classList.add('animate__animated', 'animate__bounce');
+                setTimeout(() => {
+                    badge.classList.remove('animate__animated', 'animate__bounce');
+                }, 1000);
+            }
+        }
+
+        function checkout() {
+            if (cart.length === 0) {
+                showToast('Your cart is empty!', 'danger');
+                return;
+            }
+        
+            const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0) + shippingFee;
+            const bsOffcanvas = bootstrap.Offcanvas.getInstance(document.getElementById('cartOffcanvas'));
+            bsOffcanvas.hide();
+            
+            setTimeout(() => {
+                alert(`ORDER CONFIRMED!\n\nTotal: ₱${total.toLocaleString()}\n\nThank you for your purchase! Your items will be shipped within 3 business days.`);
+                cart = [];
+                updateCart();
+                updateCartBadge();
+            }, 300);
+        }
+
+        function showToast(message, type = 'success') {
+            const toast = document.createElement('div');
+            toast.className = `position-fixed bottom-0 end-0 p-3`;
+            toast.style.zIndex = '11';
+            
+            const bgColor = type === 'success' ? 'bg-dark' : 'bg-danger';
+            
+            toast.innerHTML = `
+                <div class="toast show" role="alert" aria-live="assertive" aria-atomic="true">
+                    <div class="toast-header ${bgColor} text-white">
+                        <strong class="me-auto">Notification</strong>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast" aria-label="Close"></button>
+                    </div>
+                    <div class="toast-body bg-white">
+                        ${message}
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.classList.add('animate__animated', 'animate__fadeOut');
+                setTimeout(() => {
+                    toast.remove();
+                }, 500);
+            }, 2500);
+        }
+    </script>
+</body>
+</html>
